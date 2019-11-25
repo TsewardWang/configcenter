@@ -28,7 +28,7 @@ const BranchesTemplate = `
                     <el-button @click="mergeBranchForm.sourceBranchId=row.branchId; mergeBranchDialogVisible = true" size="small">Merge Request</el-button>
                 </el-tooltip>
                 <el-tooltip content="删除" placement="top" :open-delay="1000" :hide-after="3000">
-                    <el-button @click="deleteBranch(row)" type="danger" icon="el-icon-delete" size="small" circle></el-button>
+                    <el-button @click="deleteBranch(row)" :disabled="row.branchId === 'master'" type="danger" icon="el-icon-delete" size="small" circle></el-button>
                 </el-tooltip>
             </template>
         </el-table-column>
@@ -129,13 +129,13 @@ const BranchesTemplate = `
     </el-row>
     <el-table :data="branchRules" border stripe>
         <el-table-column prop="branchId" label="分支id"></el-table-column>
-        <el-table-column prop="priority" label="优先级">
+        <el-table-column prop="priority" label="优先级（值越小优先级越高）">
             <template slot-scope="{ row }">
                 <span v-if="!row.editing">{{ row.priority }}</span>
                 <el-input-number v-else v-model="row.editingPriority" size="small" :min="0" controls-position="right"></el-input-number>
             </template>
         </el-table-column>
-        <el-table-column prop="rule" label="规则">
+        <el-table-column prop="rule" label="规则（正则表达式）">
             <template slot-scope="{ row }">
                 <span v-if="!row.editing">{{ row.rule }}</span>
                 <el-input v-else v-model="row.editingRule" size="small" clearable placeholder="请输入规则"></el-input>
